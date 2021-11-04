@@ -3,6 +3,11 @@ import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
 
 let apolloClient: any = undefined
 
+export const gqlClient = new ApolloClient({
+    uri: process.env.NEXT_PUBLIC_API_GQL_ENDPOINT,
+    cache: new InMemoryCache(),
+})
+
 function createApolloClient() {
     return new ApolloClient({
         ssrMode: typeof window === 'undefined',

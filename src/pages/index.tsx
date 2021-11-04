@@ -1,8 +1,15 @@
+// import { useQuery } from '@apollo/client'
+// import { gql } from '@apollo/client'
+import { gqlClient } from 'lib/apolloClient'
+import { ALL_CONTINENTS } from 'lib/model/Continent'
+
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 
-const Home: NextPage = () => {
+const Home: NextPage = (props: any) => {
+    // const { loading, data, error, refetch } = useQuery(ALL_CONTINENTS)
+
     return (
         <div className={styles.container}>
             <Head>
@@ -11,11 +18,31 @@ const Home: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <main className={styles.main}>Create Next App</main>
+            <main className={styles.main}>
+                Countries app
+                {/* {loading
+                    ? 'Loading'
+                    : data.continents.map((continent: any) => {
+                          return <p key={continent.name}>{continent.name}</p>
+                      })} */}
+                {props?.continents.map((continent: any) => {
+                    return <p key={continent.name}>{continent.name}</p>
+                })}
+            </main>
 
             <footer className={styles.footer}></footer>
         </div>
     )
+}
+
+export async function getStaticProps(props: any) {
+    const { data } = await gqlClient.query({
+        query: ALL_CONTINENTS,
+    })
+
+    return {
+        props: { ...data },
+    }
 }
 
 export default Home
